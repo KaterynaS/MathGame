@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="correct_answer">Correct!</string>
+    <string name="wrong_answer">wrong</string>
+</resources>
