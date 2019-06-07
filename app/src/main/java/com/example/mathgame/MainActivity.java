@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateQuestion() {
 
-        if(score <= 5)
+        if(score <= 52)
         {
             String question = currentQuestion.getQuestion();
             questionTextview.setText(question);
