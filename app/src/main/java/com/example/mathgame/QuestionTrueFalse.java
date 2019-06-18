@@ -27,7 +27,7 @@ public class QuestionTrueFalse implements Question {
 
     @Override
     public String toString() {
-        return "Is " + question + " True?";
+        return R.string.isThis  + question + R.string.trueQuestion;
     }
 
 

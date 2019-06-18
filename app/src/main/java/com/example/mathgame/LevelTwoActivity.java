@@ -1,6 +1,7 @@
 package com.example.mathgame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Arrays;
 
 public class LevelTwoActivity extends AppCompatActivity {
 
@@ -22,7 +25,10 @@ public class LevelTwoActivity extends AppCompatActivity {
     private RadioButton radioButtonThree;
     private RadioButton radioButtonFour;
     private TextView highestScoreTextView;
-    private int currentScore = 0;
+    public static final String HIGHEST_SCORE = "highest score";
+    private static final String MESSAGE_ID = HIGHEST_SCORE;
+
+//    private int currentScore = 0;
 
     //todo maintain highest score
 
@@ -45,23 +51,23 @@ public class LevelTwoActivity extends AppCompatActivity {
 
         //todo get currenrscore bundle
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        int scoreFromLvlOne = extras.getInt("currentScore");
-        currentScore = scoreFromLvlOne;
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        int scoreFromLvlOne = extras.getInt("currentScore");
+//        currentScore = scoreFromLvlOne;
+
+        MyMathGame appState = ((MyMathGame)getApplicationContext());
+
 
         //currentScore = intent.getIntExtra("currentScore",0);
 
-        Log.d("LevelTwo score", "" + currentScore);
+        Log.d("LevelTwo score", "" + appState.getCurrentScore());
 
         updateScore();
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //todo check radiobuttons state
-                //if correct answer chosen - add to score, show next  question
-                //else
                 isCorrect();
             }
         });
@@ -69,39 +75,31 @@ public class LevelTwoActivity extends AppCompatActivity {
 
 
     private void updateScore() {
+        MyMathGame appState = ((MyMathGame)getApplicationContext());
+        currentScoreTextView.setText("Score: " + appState.getCurrentScore());
+        updateHighestScore();
+    }
 
-        //get data from shared pref
-//        SharedPreferences getSharedData = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-//        int highestScoreCounter = getSharedData.getInt("highest score",  0);
-//        highestScoreTextView.setText("Highest score: " + highestScoreCounter);
-//
-//        //set data to pref
-//        if(highestScoreCounter < currentScore)
-//        {
-//            SharedPreferences sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
-//            SharedPreferences.Editor editor = sharedPreferences.edit();
-//            editor.putInt("highest score", currentScore);
-//            editor.apply(); //saving to disk
-//        }
+    private void updateHighestScore()
+    {
+        MyMathGame appState = ((MyMathGame)getApplicationContext());
+        SharedPreferences getSharedData = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+        int highestScoreCounter = getSharedData.getInt(HIGHEST_SCORE,  0);
+        highestScoreTextView.setText("Highest score: "  + highestScoreCounter);
 
-
-        if(currentScore >= 40)
+        if(highestScoreCounter < appState.getCurrentScore())
         {
-            Toast.makeText(LevelTwoActivity.this,
-                    "Мила, ты здорово считаешь!\nТеперь время читать!",
-                    Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
-            currentScoreTextView.setText("Score: " + currentScore);
+            SharedPreferences sharedPreferences = getSharedPreferences(MESSAGE_ID, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(HIGHEST_SCORE, appState.getCurrentScore());
+            editor.apply(); //saving to disk
         }
     }
 
 
     private void isCorrect() {
 
-        boolean isCorrect = false;
-
+        MyMathGame appState = ((MyMathGame)getApplicationContext());
         int corrAns = currentQuestion.getCorrectAnswer();
 
         RadioGroup rg = (RadioGroup) findViewById(R.id.radio_group);
@@ -110,7 +108,6 @@ public class LevelTwoActivity extends AppCompatActivity {
 
         if (selectedId == -1)
         {
-            isCorrect = false;
             Toast.makeText(LevelTwoActivity.this, "Choose something", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -119,27 +116,21 @@ public class LevelTwoActivity extends AppCompatActivity {
 
             if(corrAns==Integer.valueOf(selectedRadioButtonValue))
             {
-                isCorrect=true;
                 Toast.makeText(LevelTwoActivity.this, "Correct!", Toast.LENGTH_SHORT).show();
-                currentScore = currentScore + 3;
-                updateScore();
-                currentQuestion = currentQuestion.generateArithmeticQuestion();
-                rg.clearCheck();
-                updateQuestion();
+                appState.addTwoToCurrentScore();
             }
             else
             {
-                isCorrect = false;
                 Toast.makeText(LevelTwoActivity.this, "Wrong", Toast.LENGTH_SHORT).show();
-                if(currentScore >= 2)
+                if(appState.getCurrentScore() >= 2)
                 {
-                    currentScore = currentScore - 2;
+                    appState.substructOneFromCurrentScore();
                 }
-                updateScore();
-                currentQuestion = currentQuestion.generateArithmeticQuestion();
-                rg.clearCheck();
-                updateQuestion();
             }
+            updateScore();
+            currentQuestion = currentQuestion.generateArithmeticQuestion();
+            rg.clearCheck();
+            updateQuestion();
         }
     }
 
@@ -153,7 +144,7 @@ public class LevelTwoActivity extends AppCompatActivity {
         int[] answersArray = currentQuestion.getAnswerChoices();
         int corrAnsID = currentQuestion.getCorrectAnswer();
 
-        Log.d("LevelTwo answers elems", "" + answersArray[0] + answersArray[1] + answersArray[2] + answersArray[3]);
+        Log.d("LevelTwo answers elems", "" + Arrays.toString(answersArray));
         Log.d("LevelTwo correctAnsID", "" + corrAnsID);
 
         String choice0 = String.valueOf(currentQuestion.getAnswerChoices()[0]);
@@ -165,6 +156,5 @@ public class LevelTwoActivity extends AppCompatActivity {
         radioButtonTwo.setText(choice1);
         radioButtonThree.setText(choice2);
         radioButtonFour.setText(choice3);
-
     }
 }

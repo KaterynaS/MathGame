@@ -57,7 +57,6 @@ public class QuestionRadioButtonFourAnswers implements Question {
                 break;
             default: question = new QuestionRadioButtonFourAnswers("1+2=", 3, defaultAnswerChoices);
         }
-
         return question;
     }
 

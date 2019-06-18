@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MathGame</string>
+    <string name="correct_answer">Правильно!</string>
+    <string name="false_button">нет</string>
+    <string name="hello_there_this_is_where_we_are_going_to_add_something">тут будет задача</string>
+    <string name="score_0">Счет: 0</string>
+    <string name="submit">Ответить</string>
+    <string name="true_button">Да</string>
+    <string name="choiceOne">выбор 1</string>
+    <string name="choiceFour">выбор 4</string>
+    <string name="choiceThree">выбор 3</string>
+    <string name="choiceTwo">выбор 2</string>
+    <string name="highest_score_0">Максимальный счет: 0</string>
+    <string name="next_level">Следующий уровень</string>
+    <string name="wrong_answer">Неверно</string>
+    <string name="highest_score">"Максимальный счет: "</string>
+    <string name="isThis">"Это "</string>
+    <string name="message_for_Mila">Мила, ты здорово считаешь! Теперь время читать!</string>
+    <string name="score">"Счет: "</string>
+    <string name="trueQuestion">" верно? "</string>
+    <string name="Choose_something">Выбери что-нибудь</string>
+</resources>

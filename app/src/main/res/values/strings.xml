@@ -3,4 +3,20 @@
     <string name="correct_answer">Correct!</string>
     <string name="wrong_answer">wrong</string>
     <string name="highest_score_0">Highest score: 0</string>
+    <string name="score_0">Score: 0</string>
+    <string name="choiceTwo">choice  two</string>
+    <string name="choiceOne">choice one</string>
+    <string name="choiceThree">choice three</string>
+    <string name="choiceFour">choice four</string>
+    <string name="submit">submit</string>
+    <string name="hello_there_this_is_where_we_are_going_to_add_something">Hello There this is where we are going to add something...</string>
+    <string name="true_button">true</string>
+    <string name="false_button">false</string>
+    <string name="next_level">next level</string>
+    <string name="message_for_Mila">Мила, ты здорово считаешь! Теперь время читать!</string>
+    <string name="score">Score:</string>
+    <string name="highest_score">Highest score:</string>
+    <string name="isThis">Is</string>
+    <string name="trueQuestion">true?</string>
+    <string name="Choose_something">Choose something</string>
 </resources>
