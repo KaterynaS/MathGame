@@ -1,5 +1,6 @@
 package com.example.mathgame;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -18,13 +19,9 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     private Button falseButton;
     private Button nextLvlButton;
     private TextView highestScoreTextView;
-    private QuestionTrueFalse currentQuestion = new QuestionTrueFalse();
-    //private Score currentScore = new Score();
     public static final String HIGHEST_SCORE = "highest score";
     private static final String MESSAGE_ID = HIGHEST_SCORE;
-
-
-    //todo score in a separate class with addScore and decreaseScore methods
+    LevelOneViewModel levelOneViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +41,15 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
         nextLvlButton.setVisibility(View.INVISIBLE);
         nextLvlButton.setOnClickListener(this);
 
-        showNextQuestion();
+
+        levelOneViewModel = ViewModelProviders.of(this).get(LevelOneViewModel.class);
+        updateQuestionTextView(levelOneViewModel.getCurrentQuestion());
+        Log.d("Lvl1 OnCreate", "current question = " + levelOneViewModel.getCurrentQuestion().getQuestionText());
+
         updateScore();
 
         MyMathGame appState = ((MyMathGame)getApplicationContext());
-        Log.d("Lvl1 OnCreate", "current score = " + appState.getCurrentScore());
+
 
     }
 
@@ -79,24 +80,21 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
 
 
     private void checkAnswer(boolean userInput) {
-        boolean answerIsTrue = currentQuestion.isAnswerTrue();
+        boolean answerIsTrue = levelOneViewModel.currentQuestion.isAnswerTrue();
         int toastMessageId;
         MyMathGame appState = ((MyMathGame)getApplicationContext());
         if (userInput == answerIsTrue) {
             toastMessageId = R.string.correct_answer;
-            //currentScore.addScore(2);
             appState.addTwoToCurrentScore();
-            Log.d("Lvl1 OnCreate", "current score = " + appState.getCurrentScore());
         } else {
             toastMessageId = R.string.wrong_answer;
             if (appState.getCurrentScore() > 0)
             {
-                //currentScore.lowerTheScore(1);
-                appState.substructOneFromCurrentScore();
+                appState.subtractOneFromCurrentScore();
             }
         }
         updateScore();
-        showNextQuestion();
+        updateQuestionTextView(levelOneViewModel.getNewQuestion());
         Toast.makeText(LevelOneActivity.this, toastMessageId,
                 Toast.LENGTH_LONG)
                 .show();
@@ -105,9 +103,11 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
 
     private void updateScore() {
         MyMathGame appState = ((MyMathGame)getApplicationContext());
-        if (appState.getCurrentScore() >= 10)
+        if (appState.getCurrentScore() >= 16)
         {
             nextLvlButton.setVisibility(View.VISIBLE);
+            trueButton.setVisibility(View.INVISIBLE);
+            falseButton.setVisibility(View.INVISIBLE);
         }
 
         updateHighestScore();
@@ -133,8 +133,9 @@ public class LevelOneActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void showNextQuestion() {
-        currentQuestion = currentQuestion.generateArithmeticQuestion();
-        questionTextView.setText(currentQuestion.getQuestion());
+    private void updateQuestionTextView(QuestionTrueFalse q)
+    {
+        String s = q.getQuestionText();
+        questionTextView.setText(s);
     }
 }

@@ -73,7 +73,6 @@ public class QuestionRadioButtonFourAnswers implements Question {
 
         int correctAnswer;
 
-        //todo find swap function
         //largerFirst
         if(b>a)
         {

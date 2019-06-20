@@ -63,7 +63,6 @@ public class QuestionTrueFalse implements Question {
         int firstNumber;
         int secondNumber;
 
-        //todo find swap function
         //largerFirst
         if(b>a)
         {

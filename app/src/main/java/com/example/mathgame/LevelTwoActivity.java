@@ -1,6 +1,5 @@
 package com.example.mathgame;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +29,6 @@ public class LevelTwoActivity extends AppCompatActivity {
 
 //    private int currentScore = 0;
 
-    //todo maintain highest score
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +47,7 @@ public class LevelTwoActivity extends AppCompatActivity {
         currentQuestion = currentQuestion.generateArithmeticQuestion();
         updateQuestion();
 
-        //todo get currenrscore bundle
-
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
-//        int scoreFromLvlOne = extras.getInt("currentScore");
-//        currentScore = scoreFromLvlOne;
-
         MyMathGame appState = ((MyMathGame)getApplicationContext());
-
-
-        //currentScore = intent.getIntExtra("currentScore",0);
 
         Log.d("LevelTwo score", "" + appState.getCurrentScore());
 
@@ -78,6 +66,14 @@ public class LevelTwoActivity extends AppCompatActivity {
         MyMathGame appState = ((MyMathGame)getApplicationContext());
         currentScoreTextView.setText("Score: " + appState.getCurrentScore());
         updateHighestScore();
+
+        if(appState.getCurrentScore() >= 50)
+        {
+            submitButton.setVisibility(View.INVISIBLE);
+            questionTextView.setText("Милочка, твои математические " +
+                    "\nспособности все круче!\nВремя узнать как поживает\n Роз и Красноклювик ");
+
+        }
     }
 
     private void updateHighestScore()
@@ -124,7 +120,7 @@ public class LevelTwoActivity extends AppCompatActivity {
                 Toast.makeText(LevelTwoActivity.this, "Wrong", Toast.LENGTH_SHORT).show();
                 if(appState.getCurrentScore() >= 2)
                 {
-                    appState.substructOneFromCurrentScore();
+                    appState.subtractOneFromCurrentScore();
                 }
             }
             updateScore();

@@ -16,9 +16,7 @@ public class MyMathGame extends Application {
     public int getCurrentScore(){
         return currentScore;
     }
-    public void setCurrentScore(int s){
-        currentScore = s;
-    }
+
 
     public void addOneToCurrentScore()
     {
@@ -30,7 +28,7 @@ public class MyMathGame extends Application {
         currentScore = currentScore + 2;
     }
 
-    public void substructOneFromCurrentScore()
+    public void subtractOneFromCurrentScore()
     {
         if(currentScore >= 1)
         {

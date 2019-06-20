@@ -10,12 +10,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".WelcomeActivity"></activity>
         <activity
             android:name=".LevelTwoActivity"
-            android:label="Level Two">
-        </activity>
+            android:label="Level Two"
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".LevelOneActivity">
+            android:name=".LevelOneActivity"
+            android:label="Level One">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
