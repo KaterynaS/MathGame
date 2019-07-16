@@ -1,46 +1,81 @@
 package com.example.mathgame;
 
-import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Random;
 
 public class QuestionParent {
 
     private String questionText;
+    private int firstNumber;
+    private int seconsNumber;
+    private Operand operand;
     private int correctAnswer;
 
+    public QuestionParent() {
+    }
 
     public QuestionParent(String questionText, int correctAnswer) {
-        this.questionText = questionText;
+        this.questionText = questionText; //without answer, variation for True/False should override method getText...
         this.correctAnswer = correctAnswer;
     }
 
-    public String getQuestionText()
+    public QuestionParent(int firstNum, Operand op, int secondNumber, int corrAnswer)
     {
-        return questionText;
+        String operation = "";
+        if(op == Operand.PLUS)
+        {
+            operation = " + ";
+        }
+        else if (op == Operand.MINUS)
+        {
+            operation = " - ";
+        }
+
+        String qText = firstNum + operation + secondNumber + " = ";
+
+        this.questionText = qText;
+        this.correctAnswer = corrAnswer;
     }
 
-    public boolean checkAnswer(int userInput)
+
+
+    //return String Arithmetic Problem without answer
+    public String getArithmeticProblemTextWithoutAnswer()
     {
-        boolean isCorrect;
-        if(userInput == correctAnswer) { isCorrect = true; }
-        else { isCorrect = false; }
-        return isCorrect;
+        return "1 + 2 = ";
+    }
+
+    //should only be present in trueFalseQuestions
+    //return String Arithmetic Problem with random answer (50% correct answer)
+    public String getArithmeticProblemTextWithRandomAnswer()
+    {
+
+        //take it from generated ArithmeticProblem numbersArray
+        int firstNumber = 0;
+        int secondNumber = 0;
+
+        //generate answerToShow, which is true 50%
+        int answerToShow = generateNumberInRange(0,1);
+        if(answerToShow == 0){answerToShow = firstNumber + secondNumber;}
+        else {answerToShow = generateNumberInRange(firstNumber,secondNumber+firstNumber);}
+
+        return "1 + 2 = 3";
     }
 
 
-    public QuestionParent generateArithmeticQuestion()
+    //return String arithmeticProblemText and int correctAnswer
+    public QuestionParent generateArithmeticProblem()
     {
         QuestionParent question;
-
         Operand operand = pickOperand();
 
         switch (operand)
         {
             case PLUS:
-                question = generatePlusQuestion();
+                question = generatePlusQuestionInRange(0,9);
                 break;
             case MINUS:
-                question = generateMinusQuestion();
+                question = generatePositiveMinusQuestionInRange(0,9);
                 break;
             default: question = new QuestionParent("1 + 2 = ", 3);
         }
@@ -49,64 +84,30 @@ public class QuestionParent {
     }
 
 
-    private QuestionParent generatePlusQuestion() {
-        int rangeMin = 0;
-        int rangeMax = 9;
-
-        int firstNumber = generateNumberInRange(rangeMin, rangeMax);
-        int secondNumber = generateNumberInRange(rangeMin, rangeMax);
-
+    private QuestionParent generatePlusQuestionInRange(int min, int max)
+    {
+        int firstNumber = generateNumberInRange(min, max);
+        int secondNumber = generateNumberInRange(min, max);
         int realAnswer = firstNumber + secondNumber;
 
-        //generate answerToShow, which is true 50%
-        int answerToShow = generateNumberInRange(0,1);
-        if(answerToShow == 0){answerToShow = firstNumber + secondNumber;}
-        else {answerToShow = generateNumberInRange(firstNumber,secondNumber+firstNumber);}
-
-        String template = "{0} + {1} = {2}";
-        String questionText = MessageFormat.format(template, firstNumber, secondNumber, answerToShow);
-
-        return new QuestionParent(questionText, realAnswer);
+        return new QuestionParent(firstNumber, Operand.PLUS, secondNumber, realAnswer);
     }
 
-    private QuestionParent generateMinusQuestion()
+    private QuestionParent generatePositiveMinusQuestionInRange(int min, int max)
     {
-        int rangeMin = 0;
-        int rangeMax = 9;
+        int[] arr = {generateNumberInRange(min, max), generateNumberInRange(min, max)};
 
-        int a = generateNumberInRange(rangeMin, rangeMax);
-        int b = generateNumberInRange(rangeMin, rangeMax);
+        //largerFirst - answer should only be positive
+        Arrays.sort(arr);
 
-        int firstNumber;
-        int secondNumber;
-
-        //largerFirst
-        if(b>a)
-        {
-            firstNumber = b;
-            secondNumber = a;
-        }
-        else
-        {
-            firstNumber = a;
-            secondNumber = b;
-        }
-
+        int firstNumber = arr[1];
+        int secondNumber = arr[0];
         int realAnswer = firstNumber - secondNumber;
 
-        //generate answerToShow, which is true 50%
-        int answerToShow = generateNumberInRange(0,1);
-        if(answerToShow == 0){answerToShow = firstNumber - secondNumber;}
-        else {answerToShow = generateNumberInRange(0, 9);}
-
-        String template = "{0} - {1} = {2}";
-        String questionText = MessageFormat.format(template, firstNumber, secondNumber, answerToShow);
-
-        return new QuestionParent(questionText, realAnswer);
+        return new QuestionParent(firstNumber, Operand.MINUS, secondNumber, realAnswer);
     }
 
     private Operand pickOperand() {
-
         Operand op;
         Random random = new Random();
         int a = random.nextInt(2);
@@ -121,6 +122,13 @@ public class QuestionParent {
         return a;
     }
 
+    public boolean checkAnswer(int userInput)
+    {
+        boolean isCorrect;
+        if(userInput == correctAnswer) { isCorrect = true; }
+        else { isCorrect = false; }
+        return isCorrect;
+    }
 
 
 

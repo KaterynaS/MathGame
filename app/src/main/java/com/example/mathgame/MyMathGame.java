@@ -5,9 +5,6 @@ import android.app.Application;
 public class MyMathGame extends Application {
 
     private int currentScore;
-    private int hello;
-
-
 
     public MyMathGame() {
         this.currentScore = 0;
@@ -16,7 +13,6 @@ public class MyMathGame extends Application {
     public int getCurrentScore(){
         return currentScore;
     }
-
 
     public void addOneToCurrentScore()
     {

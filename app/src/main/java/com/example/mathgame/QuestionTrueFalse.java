@@ -8,9 +8,7 @@ public class QuestionTrueFalse implements Question {
     private String question;
     private boolean answerTrue;
 
-    public QuestionTrueFalse() {
-
-    }
+    public QuestionTrueFalse() { }
 
     public QuestionTrueFalse(String question, boolean answerTrue) {
         this.question = question;

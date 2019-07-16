@@ -8,14 +8,16 @@ public class MyClass {
 
     public static void main (String[] dcs)
     {
-        for (int j = 0; j < 10; j++) {
-            int[] fourNumbers = generateAnswerChoices(5);
-            for (int i = 0; i < fourNumbers.length; i++) {
-                System.out.print(fourNumbers[i] + " ");
-            }
-            System.out.println();
-        }
+        Question e = new Question();
+        e = e.generateMultiplicationQuestion(4);
 
+        System.out.println();
+        System.out.println(e.getQuestion());
+        System.out.println(e.getCorrectAnswer());
+
+        for (int i = 0; i < e.getAnswerChoices().length; i++) {
+            System.out.print(e.getAnswerChoices()[i] + " ");
+        }
 
     }
 
@@ -25,6 +27,16 @@ public class MyClass {
         int a = random.nextInt(2);
         if(a == 0){op = Operand.PLUS;}
         else {op = Operand.MINUS;}
+
+        return op;
+    }
+
+    private static Operand pickMorD() {
+        Operand op;
+        Random random = new Random();
+        int a = random.nextInt(2);
+        if(a == 0){op = Operand.MULTIPLY;}
+        else {op = Operand.DIVIDE;}
 
         return op;
     }
@@ -59,5 +71,7 @@ public class MyClass {
 
         return a;
     }
+
+
 
 }

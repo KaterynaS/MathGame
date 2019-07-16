@@ -66,14 +66,6 @@ public class LevelTwoActivity extends AppCompatActivity {
         MyMathGame appState = ((MyMathGame)getApplicationContext());
         currentScoreTextView.setText("Score: " + appState.getCurrentScore());
         updateHighestScore();
-
-        if(appState.getCurrentScore() >= 50)
-        {
-            submitButton.setVisibility(View.INVISIBLE);
-            questionTextView.setText("Милочка, твои математические " +
-                    "\nспособности все круче!\nВремя узнать как поживает\n Роз и Красноклювик ");
-
-        }
     }
 
     private void updateHighestScore()
